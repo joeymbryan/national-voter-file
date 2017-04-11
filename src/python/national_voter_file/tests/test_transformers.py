@@ -1,5 +1,6 @@
 import os
 import csv
+import zipfile
 
 from national_voter_file.transformers.base import (DATA_DIR,
                                                    BasePreparer,
@@ -49,7 +50,12 @@ def read_transformer_output(test_filename, state):
 
 def run_state_transformer(state_test):
     state_path = state_test.transformer.StatePreparer.state_path
-    input_path = os.path.join(TEST_DATA_DIR, '{}.csv'.format(state_path))
+    z = zipfile.is_zipfile(os.path.join(TEST_DATA_DIR, '{}.zip'.format(state_path)))
+    if z:
+        input_path = os.path.join(TEST_DATA_DIR, '{}.zip'.format(state_path))
+    else:
+        input_path = os.path.join(TEST_DATA_DIR, '{}.csv'.format(state_path))
+
     output_path = os.path.join(TEST_DATA_DIR, '{}_test.csv'.format(state_path))
     state = state_test.transformer.StatePreparer.state_name
 
@@ -73,7 +79,11 @@ def run_state_transformer(state_test):
 # TODO: Build this out more for states which may have totally separate files
 def run_transformer_history(state_test):
     state_path = state_test.transformer.StatePreparer.state_path
-    input_path = os.path.join(TEST_DATA_DIR, '{}.csv'.format(state_path))
+    z = zipfile.is_zipfile(os.path.join(TEST_DATA_DIR, '{}.zip'.format(state_path)))
+    if z:
+        input_path = os.path.join(TEST_DATA_DIR, '{}.zip'.format(state_path))
+    else:
+        input_path = os.path.join(TEST_DATA_DIR, '{}.csv'.format(state_path))
     output_path = os.path.join(TEST_DATA_DIR, '{}_test_hist.csv'.format(state_path))
     state = state_test.transformer.StatePreparer.state_name
 
