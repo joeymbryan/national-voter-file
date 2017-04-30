@@ -133,7 +133,9 @@ class StatePreparer(BasePreparer):
     def yield_history_rows(self, input_path, zip_obj=None, elec_code_file=None):
         # For processing zip and raw .lst files
         if not elec_code_file:
-            elec_code_file = os.path.join(DATA_DIR, 'Michigan', 'electionscd.lst')
+            elec_code_file = os.path.join(os.path.dirname(self.input_path), 'electionscd.lst')
+            print(input_path)
+            print(elec_code_file)
         # Create mapping of election codes and values
         ec_map = {}
         ei = self.election_indices

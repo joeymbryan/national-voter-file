@@ -52,7 +52,8 @@ def run_state_transformer(state_test):
     state_path = state_test.transformer.StatePreparer.state_path
     z = zipfile.is_zipfile(os.path.join(TEST_DATA_DIR, '{}.zip'.format(state_path)))
     if z:
-        input_path = os.path.join(TEST_DATA_DIR, '{}.zip'.format(state_path))
+        input_path = os.path.join(TEST_DATA_DIR, '{}/FOIA_Voters.zip'.format(state_path))
+        print(input_path)
     else:
         input_path = os.path.join(TEST_DATA_DIR, '{}.csv'.format(state_path))
 
@@ -68,8 +69,12 @@ def run_state_transformer(state_test):
                                            state_transformer)
     writer = CsvOutput(state_transformer)
     writer(state_preparer.process(), output_path)
+    z = zipfile.is_zipfile(os.path.join(TEST_DATA_DIR, '{}.zip'.format(state_path)))
 
-    assert os.path.exists(os.path.join(TEST_DATA_DIR, '{}.csv'.format(state_path)))
+    if z:
+        pass
+    else:
+        assert os.path.exists(os.path.join(TEST_DATA_DIR, '{}.csv'.format(state_path)))
 
     state_dict_list = read_transformer_output('{}_test.csv'.format(state_path), state)
     assert sorted(state_dict_list[0].keys()) == BASE_TRANSFORMER_COLS
@@ -81,7 +86,7 @@ def run_transformer_history(state_test):
     state_path = state_test.transformer.StatePreparer.state_path
     z = zipfile.is_zipfile(os.path.join(TEST_DATA_DIR, '{}.zip'.format(state_path)))
     if z:
-        input_path = os.path.join(TEST_DATA_DIR, '{}.zip'.format(state_path))
+        input_path = os.path.join(TEST_DATA_DIR, '{}/FOIA_History.zip'.format(state_path))
     else:
         input_path = os.path.join(TEST_DATA_DIR, '{}.csv'.format(state_path))
     output_path = os.path.join(TEST_DATA_DIR, '{}_test_hist.csv'.format(state_path))
@@ -98,7 +103,10 @@ def run_transformer_history(state_test):
     writer = CsvOutput(state_transformer)
     writer(state_preparer.process(), output_path, history=True)
 
-    assert os.path.exists(os.path.join(TEST_DATA_DIR, '{}.csv'.format(state_path)))
+    if z:
+        pass
+    else:
+        assert os.path.exists(os.path.join(TEST_DATA_DIR, '{}.csv'.format(state_path)))
 
     state_dict_list = read_transformer_output(
         '{}_test_hist.csv'.format(state_path), state
